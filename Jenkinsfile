@@ -31,7 +31,7 @@ pipeline {
 
         stage('Cleanup') {
             steps {
-                sh 'docker rmi mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}'
+                sh "docker rmi mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}"
                 sh 'docker logout'
             }
         }
