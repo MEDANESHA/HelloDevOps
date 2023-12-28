@@ -27,8 +27,8 @@ pipeline {
                     def azureCredentials = credentials('azureCred')
 
                     // Extract username and password
-                    def username = azureCredentials.username
-                    def password = azureCredentials.password
+                    def username = azureCredentials.getUsername()
+                    def password = azureCredentials.getPassword()
 
                     // Authenticate with Azure Container Registry
                     docker.withRegistry('https://mycontainerregistryteldahtest.azurecr.io', username, password) {
