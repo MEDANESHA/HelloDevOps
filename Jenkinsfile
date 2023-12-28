@@ -34,14 +34,13 @@ pipeline {
                 }
             }
         }
-    }
-
-    post {
-        always {
-            // Clean up - remove the Docker image from the local Docker daemon
-            script {
-                docker.image("mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}").remove()
-            }
-        }
+        stage('Cleanup'){
+            steps {
+                sh 'docker rmi mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}'
+                sh 'docker logout'
+                }
+                }
     }
 }
+
+   
