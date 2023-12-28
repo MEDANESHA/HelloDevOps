@@ -17,23 +17,22 @@ pipeline {
                 }
             }
         }
-
-        stage('Push to ACR') {
+         stage('Build and Push Docker Image') {
             steps {
                 script {
                     // Authenticate with Azure Container Registry
-                    azureContainerRegistry(
-                        azureCredentialsId: '$AZURE_CREDENTIALS',
-                        registryType: 'AzureRM'
-                    )
-
-                    // Push Docker image to ACR
                     docker.withRegistry('https://mycontainerregistryteldahtest.azurecr.io', '$AZURE_CREDENTIALS') {
-                        docker.image("mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}").push()
+                        // Build and push your Docker image
+                        docker.build("helloworld:${env.BUILD_NUMBER}")
+                        docker.withRegistry([credentialsId: '$AZURE_CREDENTIALS', url: 'https://mycontainerregistryteldahtest.azurecr.io']) {
+                            docker.image("helloworld:${env.BUILD_NUMBER}").push()
+                        }
                     }
                 }
             }
         }
+
+        
         stage('Cleanup'){
             steps {
                 sh 'docker rmi mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}'
