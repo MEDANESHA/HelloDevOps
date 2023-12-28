@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Add the azureCred variable as authentication credentials
+        // Use the azureCred variable directly as authentication credentials
         AZURE_CREDENTIALS = credentials('azureCred')
     }
 
@@ -24,23 +24,19 @@ pipeline {
             steps {
                 script {
                     // Retrieve the credentials object
-                    def azureCredentials = credentials(AZURE_CREDENTIALS)
+                    def azureCredentials = credentials('azureCred')
 
-                    // Check if the credentials object is of type UsernamePasswordCredentials
-                    if (azureCredentials instanceof org.jenkinsci.plugins.plaincredentials.StringCredentials) {
-                        // Use the secret property to get the password
-                        def password = azureCredentials.secret
+                    // Extract username and password
+                    def username = azureCredentials.username
+                    def password = azureCredentials.password
 
-                        // Authenticate with Azure Container Registry
-                        docker.withRegistry('https://mycontainerregistryteldahtest.azurecr.io', 'username', password) {
-                            // Build and push your Docker image
-                            docker.build("helloworld:${env.BUILD_NUMBER}")
-                            docker.withRegistry([credentialsId: AZURE_CREDENTIALS, url: 'https://mycontainerregistryteldahtest.azurecr.io']) {
-                                docker.image("helloworld:${env.BUILD_NUMBER}").push()
-                            }
+                    // Authenticate with Azure Container Registry
+                    docker.withRegistry('https://mycontainerregistryteldahtest.azurecr.io', username, password) {
+                        // Build and push your Docker image
+                        docker.build("helloworld:${env.BUILD_NUMBER}")
+                        docker.withRegistry([credentialsId: 'azureCred', url: 'https://mycontainerregistryteldahtest.azurecr.io']) {
+                            docker.image("helloworld:${env.BUILD_NUMBER}").push()
                         }
-                    } else {
-                        error "Unsupported credentials type"
                     }
                 }
             }
