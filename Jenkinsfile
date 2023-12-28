@@ -40,7 +40,7 @@ pipeline {
         always {
             // Clean up - remove the Docker image from the local Docker daemon
             script {
-                docker.image("mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}").removeImage()
+                docker.image("mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}").remove()
             }
         }
     }
