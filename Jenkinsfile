@@ -19,27 +19,14 @@ pipeline {
                 }
             }
         }
-
-        stage('Build and Push Docker Image') {
-            steps {
-                script {
-                    // Retrieve the credentials object
-                    def azureCredentials = credentials('azureCred')
-
-                    // Extract username and password
-                    def username = azureCredentials.getUsername()
-                    def password = azureCredentials.getPassword()
-
-                    // Authenticate with Azure Container Registry
-                    docker.withRegistry('https://mycontainerregistryteldahtest.azurecr.io', username, password) {
-                        // Build and push your Docker image
-                        docker.build("helloworld:${env.BUILD_NUMBER}")
-                        docker.withRegistry([credentialsId: 'azureCred', url: 'https://mycontainerregistryteldahtest.azurecr.io']) {
-                            docker.image("helloworld:${env.BUILD_NUMBER}").push()
-                        }
-                    }
-                }
+        stage('azure login and push the docker image to acr hub'){
+            steps{
+                withCredentials ([usernamePassword(credentialsId: 'azureCred', passwordVariable: 'password', usernameVariable: 'username')]) {
+                sh 'docker login -u ${username} -p ${password} mycontainerregistryteldahtest.azurecr.io'
+                sh "docker image push mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}"
+        
             }
+        }
         }
 
         stage('Cleanup') {
