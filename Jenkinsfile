@@ -23,8 +23,13 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
+                    // Retrieve username and password from the credentials object
+                    def azureCredentials = credentials(AZURE_CREDENTIALS)
+                    def username = azureCredentials.username
+                    def password = azureCredentials.password
+
                     // Authenticate with Azure Container Registry
-                    docker.withRegistry('https://mycontainerregistryteldahtest.azurecr.io', AZURE_CREDENTIALS) {
+                    docker.withRegistry('https://mycontainerregistryteldahtest.azurecr.io', username, password) {
                         // Build and push your Docker image
                         docker.build("helloworld:${env.BUILD_NUMBER}")
                         docker.withRegistry([credentialsId: AZURE_CREDENTIALS, url: 'https://mycontainerregistryteldahtest.azurecr.io']) {
