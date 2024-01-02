@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Update K8s Manifest') {
             steps {
-                git branch: 'main', url: 'https://github.com/MEDANESHA/deploy-k8s.git'
+                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git'
         
                 script {
                     sh """
@@ -49,7 +49,7 @@ pipeline {
                 sh 'git add hello-world-pod.yaml'
                 sh '''
                         git config user.email "you@example.com" 
-                        git config user.name "Your Name" 
+                        git config user.name "" 
                         git commit -am "Update image tag"
                         
                         git push  origin main
