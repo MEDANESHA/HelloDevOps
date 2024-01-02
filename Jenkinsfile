@@ -32,8 +32,13 @@ pipeline {
     stage('Update K8s Manifest') {
         steps {
             git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'https://github.com/MEDANESHA/deploy-k8s.git'
-            sh """awk '/spec.containers(name==hello-world-1).image/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:\${env.BUILD_NUMBER}");} 1' hello-world-pod.yaml > hello-world-pod.yaml.tmp && mv hello-world-pod.yaml.tmp hello-world-pod.yaml"""
-        
+            sh '''
+                    awk '/spec.containers(name==hello-world-1).image/ {
+                    sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");
+                    } 1' hello-world-pod.yaml > hello-world-pod.yaml.tmp
+                    mv hello-world-pod.yaml.tmp hello-world-pod.yaml
+                '''
+
             // Print the content after modification
             sh 'cat hello-world-pod.yaml'
         
