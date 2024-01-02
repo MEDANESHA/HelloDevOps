@@ -51,7 +51,7 @@ pipeline {
                 git config user.email "you@example.com" 
                 git config user.name "Your Name" 
                 git commit -am "Update image tag"
-                git push origin main
+                git push git@github.com:MEDANESHA/deploy-k8s.git main
             '''
         }
     }
