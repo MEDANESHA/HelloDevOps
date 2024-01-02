@@ -49,7 +49,7 @@ pipeline {
                         git config user.email "you@example.com" 
                         git config user.name "Your Name" 
                         git commit -am "Update image tag"
-                        git push main
+                        git push origin main
                     '''
         
             }
