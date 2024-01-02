@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Update K8s Manifest') {
             steps {
-                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'https://github.com/MEDANESHA/deploy-k8s.git'
+                git branch: 'main', url: 'https://github.com/MEDANESHA/deploy-k8s.git'
         
                 script {
                     sh """
@@ -39,9 +39,7 @@ pipeline {
                         mv hello-world-pod-updated.yaml hello-world-pod.yaml
                     """
                 }
-                // Set the remote URL to use SSH
-                sh 'git remote set-url origin git@github.com:MEDANESHA/deploy-k8s.git'
-
+               
                 // Print the content after modification
                 sh 'cat hello-world-pod.yaml'
     
