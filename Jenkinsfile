@@ -37,7 +37,7 @@ pipeline {
                     sh '''
                         git config user.email "you@example.com" 
                         git config user.name "Your Name" 
-                        git commit -am "Update image tag to ${env.BUILD_NUMBER}"
+                        git commit -am "Update image tag"
                         git push origin main
                     '''
                 }
