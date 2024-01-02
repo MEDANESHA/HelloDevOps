@@ -51,6 +51,8 @@ pipeline {
                         git config user.email "you@example.com" 
                         git config user.name "Your Name" 
                         git commit -am "Update image tag"
+                        sh 'ssh -Tv git@github.com'
+                        sh 'ssh -Tv git@github.com'
                         git push --set-upstream origin main
 
                     '''
