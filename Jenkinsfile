@@ -31,31 +31,30 @@ pipeline {
         }
         stage('Update K8s Manifest') {
             steps {
-                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git'
+                
         
                 script {
-                    sh """
+                    // Start SSH agent and load credentials
+                    sshagent(credentials: [jenkins-ssh-key]) {
+                        // Set the remote URL to use SSH
+                        sh 'git remote set-url origin git@github.com:MEDANESHA/deploy-k8s.git'
+                        sh """
                         awk '/image: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-pod.yaml > hello-world-pod-updated.yaml
                         mv hello-world-pod-updated.yaml hello-world-pod.yaml
-                    """
+                        """
+                        // Print the content after modification
+                        sh 'cat hello-world-pod.yaml'
+
+                        // Stage the changes for commit
+                        sh 'git add hello-world-pod.yaml'
+                        sh 'git config user.email "mouhamed195h@gmail.com"'
+                        sh 'git config user.name "medanes"'
+                        sh 'git commit -am "Update image tag"'
+                        sh 'git push origin main'
+                    }
+                    
                 }
-                // Set the remote URL to use SSH
-                sh 'git remote set-url origin git@github.com:MEDANESHA/deploy-k8s.git'
-
-                // Print the content after modification
-                sh 'cat hello-world-pod.yaml'
-    
-                // Stage the changes for commit
-                sh 'git add hello-world-pod.yaml'
-                sh '''
-                        git config user.email "mouhamed195h@gmail.com" 
-                        git config user.name "medanes" 
-                        git commit -am "Update image tag"
-                        
-                        git push  origin main
-
-                    '''
-        
+                
             }
         }
 
