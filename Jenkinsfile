@@ -39,6 +39,8 @@ pipeline {
                         mv hello-world-pod-updated.yaml hello-world-pod.yaml
                     """
                 }
+                // Set the remote URL to use SSH
+                sh 'git remote set-url origin git@github.com:MEDANESHA/deploy-k8s.git'
 
                 // Print the content after modification
                 sh 'cat hello-world-pod.yaml'
@@ -46,7 +48,8 @@ pipeline {
                 // Stage the changes for commit
                 sh 'git add hello-world-pod.yaml'
                 sh '''
-                        
+                        git config user.email "you@example.com" 
+                        git config user.name "Your Name" 
                         git commit -am "Update image tag"
                         git push --set-upstream origin main
 
