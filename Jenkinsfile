@@ -32,7 +32,7 @@ pipeline {
         stage('Update K8s Manifest') {
             steps {
                 git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'https://github.com/MEDANESHA/deploy-k8s.git'
-                sh 'sed -i "s|spec.containers(name==hello-world-1).image.*|spec.containers(name==hello-world-1).image mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}|" hello-world-pod.yaml'
+                sh """sed -i 's|spec.containers(name==hello-world-1).image.*|spec.containers(name==hello-world-1).image mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}|' hello-world-pod.yaml"""
                 withCredentials([usernamePassword(credentialsId: 'gitCred', passwordVariable: 'password', usernameVariable: 'username')]) {
                     sh '''
                         git config user.email "you@example.com" 
