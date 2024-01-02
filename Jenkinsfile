@@ -45,14 +45,13 @@ pipeline {
     
                 // Stage the changes for commit
                 sh 'git add hello-world-pod.yaml'
-                withCredentials([usernamePassword(credentialsId: 'jenkins-ssh-key', passwordVariable: 'password', usernameVariable: 'username')]) {
                 sh '''
-                    git config user.email "you@example.com"
-                    git config user.name "Your Name"
-                    git commit -am "Update image tag"
-                    git push https://${username}:${password}@github.com/MEDANESHA/deploy-k8s.git main
-                '''
-                }
+                        git config user.email "you@example.com" 
+                        git config user.name "Your Name" 
+                        git commit -am "Update image tag"
+                        git push origin main
+                    '''
+        
             }
         }
 
