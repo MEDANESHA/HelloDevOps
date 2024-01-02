@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Update K8s Manifest') {
             steps {
-                git branch: 'main', credentialsId: 'gitCred', url: 'git@github.com:MEDANESHA/deploy-k8s.git' 
+                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git'
                 sh "yq write --inplace deployment.yaml 'spec.containers(name==hello-world-1).image' mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}" 
                 withCredentials([usernamePassword(credentialsId: 'gitCred', passwordVariable: 'password', usernameVariable: 'username')]) {
                     sh '''
