@@ -48,8 +48,8 @@ pipeline {
                 // Stage the changes for commit
                 sh 'git add hello-world-pod.yaml'
                 sh '''
-                        git config user.email "you@example.com" 
-                        git config user.name "" 
+                        git config user.email "mouhamed195h@gmail.com" 
+                        git config user.name "medanes" 
                         git commit -am "Update image tag"
                         
                         git push  origin main
