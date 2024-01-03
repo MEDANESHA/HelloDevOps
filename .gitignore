@@ -1,2 +1,6 @@
-/Terraform-Azure/*
+/Terraform-Azure/.terraform
+/Terraform-Azure/.terraform.lock.hcl
+/Terraform-Azure/.terraform.tfstate.lock.info
+/Terraform-Azure/terraform.tfstate
+/Terraform-Azure/terraform.tfstate.backup
 /test/*
