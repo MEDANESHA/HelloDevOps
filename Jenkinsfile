@@ -39,21 +39,24 @@ pipeline {
                     sh """
                         awk '/image: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-pod.yaml > hello-world-pod-updated.yaml
                         mv hello-world-pod-updated.yaml hello-world-pod.yaml
+                        awk '/image: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-deploy.yaml > hello-world-deploy-updated.yaml
+                        mv hello-world-deploy-updated.yaml hello-world-deploy.yaml
                     """
                 }
                 
                 // Print the content after modification
                 sh 'cat hello-world-pod.yaml'
+                sh 'cat hello-world-deploy.yaml'
     
                 // Stage the changes for commit
                 sh 'git add hello-world-pod.yaml'
-                sh '''
+                sh """
                        
-                        git commit -am "Update image tag"
+                        git commit -am "Update image tag to ${env.BUILD_NUMBER}"
                         
                         git push  origin main
 
-                    '''
+                    """
         
             }
         }
