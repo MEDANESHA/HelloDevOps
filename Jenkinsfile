@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Use the azureCred variable directly as authentication credentials
         AZURE_CREDENTIALS = credentials('azureCred')
-        GIT_CREDENTIALS = credentials('gitCred') // Add your Git credentials here
+       
     }
 
     triggers {
@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Update K8s Manifest') {
             steps {
-                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git'
+                git branch: 'main', url: 'git@github.com:MEDANESHA/deploy-k8s.git'
         
                 script {
                     
@@ -41,17 +41,14 @@ pipeline {
                         mv hello-world-pod-updated.yaml hello-world-pod.yaml
                     """
                 }
-                // Set the remote URL to use SSH
-                sh 'git remote set-url origin git@github.com:MEDANESHA/deploy-k8s.git'
-
+               
                 // Print the content after modification
                 sh 'cat hello-world-pod.yaml'
     
                 // Stage the changes for commit
                 sh 'git add hello-world-pod.yaml'
                 sh '''
-                        git config user.email "mouhamed195h@gmail.com" 
-                        git config user.name "medanes" 
+                       
                         git commit -am "Update image tag"
                         
                         git push  origin main
