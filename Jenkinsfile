@@ -6,6 +6,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                echo "Récupération du code source"
+                checkout scm
+                }
+            }
         stage('Build Docker Image') {
             steps {
                 script {
