@@ -9,6 +9,7 @@ pipeline {
 
     triggers {
         pollSCM('*/5 * * * *') // Check every 5 minutes
+        filter: true
     }
 
     stages {
