@@ -8,8 +8,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo "Récupération du code source"
-                checkout scm
+                echo "getting source code"
+                checkout scm 
                 }
             }
         stage('Build Docker Image') {
@@ -44,13 +44,13 @@ pipeline {
                     """
                 }
                 
-                // Print the content after modification
-                sh 'cat hello-world-pod.yaml'
-                sh 'cat hello-world-deploy.yaml'
+                    // Print the content after modification
+                    sh 'cat hello-world-pod.yaml'
+                    sh 'cat hello-world-deploy.yaml'
     
-                // Stage the changes for commit
-                sh 'git add hello-world-pod.yaml'
-                sh """
+                    // Stage the changes for commit
+                    sh 'git add hello-world-pod.yaml'
+                    sh """
                        
                         git commit -am "Update image tag to ${env.BUILD_NUMBER}"
                         
