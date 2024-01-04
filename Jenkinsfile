@@ -2,14 +2,12 @@ pipeline {
     agent any
 
     environment {
-        // Use the azureCred variable directly as authentication credentials
-        AZURE_CREDENTIALS = credentials('azureCred')
+        
        
     }
 
     triggers {
-        pollSCM('*/5 * * * *') // Check every 5 minutes
-        filter: true
+        pollSCM(cron: '*/5 * * * *', filter: true)//check for update every 5 min
     }
 
     stages {
