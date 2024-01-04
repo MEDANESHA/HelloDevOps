@@ -54,7 +54,7 @@ pipeline {
                        
                         git commit -am "Update image tag to ${env.BUILD_NUMBER}"
                         
-                        git push  origin main
+                        git push  origin main 
 
                     """
         
