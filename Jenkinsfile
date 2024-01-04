@@ -1,11 +1,9 @@
 pipeline {
     agent any
 
-
-
     triggers {
-        pollSCM changeset: '.*', cron: '*/5 * * * *'
-            }
+        pollSCM('*/5 * * * *') // Check every 5 minutes
+    }
 
     stages {
         stage('Build Docker Image') {
