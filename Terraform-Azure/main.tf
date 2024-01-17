@@ -108,8 +108,8 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   }
   #create a service_principal with azure CLI and then retrive information
   service_principal {
-    client_id     = "c196df87-a70d-4af7-a2c1-fec12007a276"
-    client_secret = "BNX8Q~gmap~2Ap-qBi_dVQbjXs_zC6DWpcT9nbxd"
+    client_id     = "47dbb9b2-30cb-489f-a8ed-b6046b9c1b77"
+    client_secret = "ar28Q~PouPxUIbd1MKk.Yajvg4B76fC7eVEPfa0S"
   }
 
   tags = {
