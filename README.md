@@ -8,7 +8,7 @@ This project involves the creation of a Hello World application using Node.js, a
 
 ### Jenkins Pipeline
 
-A Jenkins pipeline has been established to automate the process of checking commits, building Docker images, and pushing the built images to the Azure Container Registry.
+A Jenkins pipeline has been established to automate the process of checking commits, building Docker images, and pushing the built images to the Azure Container Registry, also to commit the project new image version to the 'deploy-k8s' repository, which contains K8s manifest files. This action will trigger ArgoCD to synchronize with the K8s architecture.
 
 ## Continuous Deployment (CD)
 
@@ -35,4 +35,4 @@ A Jenkins pipeline has been established to automate the process of checking comm
 
 1. **Installation**: Grafana is installed using Helm.
 2. **External IP Configuration**: Similar to Prometheus, Grafana is configured with an external IP address.
-3. **Dashboards and Alerts**: A dashboard template has been added to Grafana, including an alert triggered when HTTPS requests exceed 500 requests in 5 minutes.
+3. **Dashboards and Alerts**: A dashboard template has been added to Grafana, including an Alert triggred if the number of restarts for the HelloWorld pod exceeds a certain threshold, and an alert triggred if CPU or memory usage for the HelloWorld container goes above a predefined threshold.
