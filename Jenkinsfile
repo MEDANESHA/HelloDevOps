@@ -31,25 +31,24 @@ pipeline {
         }
         stage('Update K8s Manifest') {
             steps {
-                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git'
+                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git/hello-world-charts'
         
                 script {
                     
                     
                     sh """
-                        awk '/image: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-pod.yaml > hello-world-pod-updated.yaml
-                        mv hello-world-pod-updated.yaml hello-world-pod.yaml
-                        awk '/image: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-deploy.yaml > hello-world-deploy-updated.yaml
-                        mv hello-world-deploy-updated.yaml hello-world-deploy.yaml
+                        awk '/image: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' values.yaml > values-updated.yaml
+                        mv values-updated.yaml values.yaml
+                        
                     """
                 }
                 
                     // Print the content after modification
-                    sh 'cat hello-world-pod.yaml'
-                    sh 'cat hello-world-deploy.yaml'
+                    sh 'cat values.yaml'
+                    
     
                     // Stage the changes for commit
-                    sh 'git add hello-world-pod.yaml'
+                    sh 'git add values.yaml'
                     sh """
                        
                         git commit -am "Update image tag to ${env.BUILD_NUMBER}"
