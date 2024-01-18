@@ -31,24 +31,24 @@ pipeline {
         }
         stage('Update K8s Manifest') {
             steps {
-                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git/hello-world-charts'
+                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git'
         
                 script {
                     
                     
                     sh """
-                        awk '/image: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' values.yaml > values-updated.yaml
-                        mv values-updated.yaml values.yaml
+                        awk '/image: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-charts/values.yaml > values-updated.yaml
+                        mv values-updated.yaml hello-world-charts/values.yaml
                         
                     """
                 }
                 
                     // Print the content after modification
-                    sh 'cat values.yaml'
+                    sh 'cat hello-world-charts/values.yaml'
                     
     
                     // Stage the changes for commit
-                    sh 'git add values.yaml'
+                    sh 'git add hello-world-charts/values.yaml'
                     sh """
                        
                         git commit -am "Update image tag to ${env.BUILD_NUMBER}"
