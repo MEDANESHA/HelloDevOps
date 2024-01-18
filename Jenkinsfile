@@ -34,9 +34,10 @@ pipeline {
         script {
             // Update Docker image version in values.yaml
             sh """
-                awk '/repository: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-charts/values.yaml > values-updated.yaml
-                mv values-updated.yaml hello-world-charts/values.yaml
-            """
+                awk '/repository: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-charts/values.yaml > hello-world-charts/values-updated.yaml
+                mv hello-world-charts/values-updated.yaml hello-world-charts/values.yaml
+                """
+
 
             // Update Helm chart version in Chart.yaml
             sh """
