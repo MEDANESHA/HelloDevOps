@@ -51,11 +51,11 @@ pipeline {
                         """
                 
                     // Print the content after modification
-                    sh 'cat values.yaml'
+                    sh 'cat hello-world-charts/values.yaml'
                    
     
                     // Stage the changes for commit
-                    sh 'git add values.yaml'
+                    sh 'git add hello-world-charts/values.yaml'
                     sh """
                        
                         git commit -am "Update image tag to ${env.BUILD_NUMBER}"
