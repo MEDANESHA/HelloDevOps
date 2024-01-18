@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Update K8s Manifest') {
             steps {
-                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git/hello-world-charts'
+                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git'
         
                 script {
                     
