@@ -30,35 +30,31 @@ pipeline {
         }
         }
         stage('Update K8s Manifest') {
-            steps {
-                git branch: 'main', credentialsId: 'jenkins-ssh-key', url: 'git@github.com:MEDANESHA/deploy-k8s.git'
-        
-                script {
-                    
-                    
-                    sh """
-                        awk '/image: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-charts/values.yaml > values-updated.yaml
-                        mv values-updated.yaml hello-world-charts/values.yaml
-                        
-                    """
-                }
-                
-                    // Print the content after modification
-                    sh 'cat hello-world-charts/values.yaml'
-                    
-    
-                    // Stage the changes for commit
-                    sh 'git add hello-world-charts/values.yaml'
-                    sh """
-                       
-                        git commit -am "Update image tag to ${env.BUILD_NUMBER}"
-                        
-                        git push  origin main 
+    steps {
+        script {
+            // Update Docker image version in values.yaml
+            sh """
+                awk '/repository: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-charts/values.yaml > values-updated.yaml
+                mv values-updated.yaml hello-world-charts/values.yaml
+            """
 
-                    """
-        
-            }
+            // Update Helm chart version in Chart.yaml
+            sh """
+                awk '/^version:/ {sub(/[0-9]+\\.[0-9]+\\.[0-9]+/, "${env.BUILD_NUMBER}");} 1' hello-world-charts/Chart.yaml > Chart-updated.yaml
+                mv Chart-updated.yaml hello-world-charts/Chart.yaml
+            """
+
+            // Print the content after modification
+            sh 'cat hello-world-charts/values.yaml'
+
+            // Stage the changes for commit
+            sh 'git add hello-world-charts/values.yaml hello-world-charts/Chart.yaml'
+            sh 'git commit -am "Update image and chart version to ${env.BUILD_NUMBER}"'
+            sh 'git push origin main'
         }
+    }
+}
+
 
         stage('Cleanup') {
             steps {
