@@ -46,7 +46,7 @@ pipeline {
             emailext subject: 'Build Failure: ${currentBuild.fullDisplayName}',
                       body: 'The pipeline failed to build. Please check the Jenkins console output for more details.',
                       recipientProviders: [developers()],
-                      to: 'mouhamedanes.h@gmail.com'
+                      to: 'mouhamed195h@gmail.com'
         }
     }
 }
