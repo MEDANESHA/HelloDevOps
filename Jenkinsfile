@@ -37,11 +37,13 @@ pipeline {
                     
                     
                    script {
+                    def newTag = "${env.BUILD_NUMBER}"
+
+                    // Update the tag attribute in values.yaml 
                     sh """
-                        awk '/repository: mycontainerregistryteldahtest.azurecr.io\\/helloworld:/ {sub(/mycontainerregistryteldahtest.azurecr.io\\/helloworld:[0-9]+/, "mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}");} 1' hello-world-charts/values.yaml > hello-world-charts/values-updated.yaml
-                        mv hello-world-charts/values-updated.yaml hello-world-charts/values.yaml
-                        """
-}
+                        sed -i.bak 's/tag: "[0-9]\\+"/tag: "${newTag}"/' hello-world-charts/values.yaml
+                    """
+                }
 
                 }
                      // Update Helm chart version in Chart.yaml
