@@ -6,6 +6,7 @@ pipeline {
     }
 
     stages {
+        emailext body: 'the pipeline faild to build', recipientProviders: [developers()], subject: 'build error', to: 'mouhamed195h@gmail.com'
         stage('Checkout') {
             steps {
                 echo "getting source code"
@@ -66,21 +67,3 @@ pipeline {
         }
     }
 
-   post {
-         changed {
-            script {
-                if (currentBuild.currentResult == 'FAILURE') { 
-                    emailext subject: 'build error',
-                        body: 'the is an issue with the pipeline build',
-                        recipientProviders: [
-                            [$class: 'CulpritsRecipientProvider'],
-                            [$class: 'DevelopersRecipientProvider'],
-                            [$class: 'RequesterRecipientProvider'] 
-                        ], 
-                        replyTo: 'mouhamed195h@gmail.com',
-                        to: 'mouhamed195h@gmail.com'
-                }
-            }
-        }
-    }
-}
