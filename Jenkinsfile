@@ -66,13 +66,20 @@ pipeline {
         }
     }
 
-    post {
-        failure {
+   post {
+         changed {
             script {
-                emailext subject: 'Build Failed: ${currentBuild.fullDisplayName}',
-                          body: 'The build failed. Please check the Jenkins console output for more details.',
-                          to: 'mouhamedanes.h@gmail.com',
-                          attachLog: true
+                if (currentBuild.currentResult == 'FAILURE') { 
+                    emailext subject: '$DEFAULT_SUBJECT',
+                        body: '$DEFAULT_CONTENT',
+                        recipientProviders: [
+                            [$class: 'CulpritsRecipientProvider'],
+                            [$class: 'DevelopersRecipientProvider'],
+                            [$class: 'RequesterRecipientProvider'] 
+                        ], 
+                        replyTo: '$DEFAULT_REPLYTO',
+                        to: '$DEFAULT_RECIPIENTS'
+                }
             }
         }
     }
