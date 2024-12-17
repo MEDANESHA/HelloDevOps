@@ -51,7 +51,7 @@ pipeline {
 
                         // Update the image tag in values.yaml
                         sh """
-                            sed -i 's|image:.*|image: mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}|' ${helmChartPath}
+                            sed -i 's|tag:.*|tag: "${env.BUILD_NUMBER}"|' ${helmChartPath}
                         """
 
                         // Commit and push the change
