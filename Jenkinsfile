@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                    docker.buld("mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}")
+                    docker.build("mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}")
                 }
             }
         }
