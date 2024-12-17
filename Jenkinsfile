@@ -30,6 +30,43 @@ pipeline {
                 }
             }
         }
+         stage('Update Helm Values File') {
+            steps {
+                script {
+                    // Variables
+                    def helmRepoUrl = 'git@github.com:MEDANESHA/deploy-k8s.git' // Replace with your repo URL
+                    def branchName = 'main' // Replace with target branch
+                    def helmChartPath = 'hello-world-charts/values.yaml' // Path to values.yaml
+
+                    // Clone the Helm repo
+                    sh """
+                        rm -rf helm-repo
+                        git clone ${helmRepoUrl} helm-repo
+                    """
+                    dir('helm-repo') {
+                        // Checkout the desired branch
+                        sh """
+                            git checkout ${branchName}
+                        """
+
+                        // Update the image tag in values.yaml
+                        sh """
+                            sed -i 's|image:.*|image: mycontainerregistryteldahtest.azurecr.io/helloworld:${env.BUILD_NUMBER}|' ${helmChartPath}
+                        """
+
+                        // Commit and push the change
+                        sh """
+                        git config user.email "ci-bot@example.com"
+                        git config user.name "CI Bot"
+                        git add ${helmChartPath}
+                        git commit -m "Update image tag to ${env.BUILD_NUMBER}"
+                        git push origin ${branchName}
+                        """
+                        }
+                    }
+                }
+            }
+        }
 
         // ... (other stages)
 
